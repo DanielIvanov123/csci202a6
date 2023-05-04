@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gary the Guru</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="elizabot.js"></script>
+  <script src="elizadata.js"></script>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="chat-output"></div>
+    <form id="chat-form">
+      <input id="chat-input" type="text" placeholder="Type your message...">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+  <script>
+    const chatOutput = document.getElementById('chat-output');
+    const chatInput = document.getElementById('chat-input');
+    const chatForm = document.getElementById('chat-form');
+
+    const Gary = new ElizaBot();
+    const initialMessage = Gary.getInitial();
+
+    const addMessage = (message, author) => {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('chat-message');
+      messageElement.innerHTML = `<strong>${author}:</strong> ${message}`;
+      chatOutput.appendChild(messageElement);
+      chatOutput.scrollTop = chatOutput.scrollHeight;
+    };
+
+    addMessage(initialMessage, 'Gary');
+
+    chatForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      addMessage(message, 'You');
+      const response = Gary.transform(message);
+      addMessage(response, 'Gary');
+
+      chatInput.value = '';
+    });
+  </script>
+</body>
+</html>
+
